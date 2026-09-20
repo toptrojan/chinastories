@@ -18,16 +18,15 @@
     <button type="button" id="login-button">Войти</button>
 
     <div class="owner-login">
-      <button type="button" id="owner-login-btn" class="owner-btn">🔑 Войти как владелец GitHub</button>
-      <div id="owner-device-box" class="device-box hidden">
-        <p>Откройте <a href="https://github.com/login/device" target="_blank" rel="noopener">github.com/login/device</a></p>
-        <p>и введите код:</p>
-        <div id="owner-device-code" class="device-code">————</div>
-        <p id="owner-device-status" class="device-status">Ожидание...</p>
-      </div>
-    </div>
+  <button type="button" id="owner-login-btn" class="owner-btn">🔑 Войти как администратор</button>
+  <div id="owner-device-box" class="device-box hidden">
+    <p>Код отправлен:</p>
+    <p>Введите код из письма:</p>
+    <input type="text" id="owner-code-input" maxlength="10" placeholder="10 букв" autocomplete="off" autocapitalize="characters" />
+    <button type="button" id="owner-code-submit">Подтвердить</button>
+    <p id="owner-device-status" class="device-status"></p>
   </div>
-</section>
+</div>
 
 <section id="user-screen" class="hidden">
   <div class="tabs">
