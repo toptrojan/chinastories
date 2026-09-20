@@ -1,0 +1,2 @@
+git rm --cached /main/
+git commit -m "Stop tracking config.js"
