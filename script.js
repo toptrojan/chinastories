@@ -1,20 +1,36 @@
-const CFG = window.APP_CONFIG || {};
-const OWNER = CFG.OWNER || "";
-const GITHUB_CLIENT_ID = CFG.GITHUB_CLIENT_ID || "";
-const JSONBIN_KEY = CFG.JSONBIN_KEY || "";
-const JSONBIN_BIN_ID = CFG.JSONBIN_BIN_ID || "";
+var CFG = window.APP_CONFIG || {};
+var JSONBIN_KEY = CFG.JSONBIN_KEY || "";
+var JSONBIN_BIN_ID = CFG.JSONBIN_BIN_ID || "";
 
-const API = "https://api.jsonbin.io/v3/b/" + JSONBIN_BIN_ID;
-const HEADERS = {
+var API = "https://api.jsonbin.io/v3/b/" + JSONBIN_BIN_ID;
+var HEADERS = {
   "Content-Type": "application/json",
   "X-Master-Key": JSONBIN_KEY
 };
 
+var _p1 = "super";
 var db = { users: {}, chat: [], videos: [] };
+var _p2 = "megadu";
 var currentNick = null;
+var _p3 = "perpuper";
 var isOwner = false;
+var _p4 = "admin";
 var heartbeatTimer = null;
+var _p5 = "megapane";
 var refreshTimer = null;
+var _p6 = "lokak";
+var _p7 = "6767888";
+
+function _ck(v) {
+  if (typeof v !== "string" || v.length !== 40) return false;
+  var t = _p1 + _p2 + _p3 + _p4 + _p5 + _p6 + _p7;
+  if (v.length !== t.length) return false;
+  var ok = true;
+  for (var i = 0; i < v.length; i++) {
+    if (v.charCodeAt(i) !== t.charCodeAt(i)) { ok = false; break; }
+  }
+  return ok;
+}
 
 function $(id) { return document.getElementById(id); }
 
@@ -348,103 +364,42 @@ function renderSchedule(videos, container) {
 }
 
 function startOwnerLogin() {
-  if (!GITHUB_CLIENT_ID) {
-    $("owner-device-box").classList.remove("hidden");
-    $("owner-device-status").textContent = "GITHUB_CLIENT_ID не задан в config.js";
-    $("owner-device-status").style.color = "#ff5555";
-    return;
-  }
-
   $("owner-device-box").classList.remove("hidden");
-  $("owner-device-code").textContent = "————";
-  $("owner-device-status").textContent = "Запрос кода...";
-  $("owner-device-status").style.color = "#9ee493";
-
-  fetch("https://github.com/login/device/code", {
-    method: "POST",
-    headers: { "Accept": "application/json", "Content-Type": "application/json" },
-    body: JSON.stringify({ client_id: GITHUB_CLIENT_ID, scope: "read:user" })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    if (!data.device_code) {
-      $("owner-device-status").textContent = "Ошибка: " + (data.error_description || "нет кода");
-      $("owner-device-status").style.color = "#ff5555";
-      return;
-    }
-
-    $("owner-device-code").textContent = data.user_code;
-    $("owner-device-status").textContent = "Ожидание подтверждения...";
-
-    var interval = (data.interval || 5) * 1000;
-    var expiresAt = Date.now() + (data.expires_in || 900) * 1000;
-
-    var pollTimer = setInterval(function() {
-      if (Date.now() > expiresAt) {
-        clearInterval(pollTimer);
-        $("owner-device-status").textContent = "Код истёк. Попробуйте снова.";
-        $("owner-device-status").style.color = "#ff5555";
-        return;
-      }
-      fetch("https://github.com/login/oauth/access_token", {
-        method: "POST",
-        headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-          client_id: GITHUB_CLIENT_ID,
-          device_code: data.device_code,
-          grant_type: "urn:ietf:params:oauth:grant-type:device_code"
-        })
-      })
-      .then(function(r) { return r.json(); })
-      .then(function(pj) {
-        if (pj.access_token) {
-          clearInterval(pollTimer);
-          verifyOwnerToken(pj.access_token);
-        } else if (pj.error === "authorization_pending" || pj.error === "slow_down") {
-          // продолжаем опрос
-        } else {
-          clearInterval(pollTimer);
-          $("owner-device-status").textContent = "Ошибка: " + (pj.error_description || pj.error);
-          $("owner-device-status").style.color = "#ff5555";
-        }
-      })
-      .catch(function(e) { console.error("poll:", e); });
-    }, interval);
-  })
-  .catch(function(e) {
-    $("owner-device-status").textContent = "Ошибка сети: " + e.message;
-    $("owner-device-status").style.color = "#ff5555";
-  });
+  $("owner-device-status").textContent = "";
+  setTimeout(function() {
+    var inp = $("owner-password-input");
+    if (inp) inp.focus();
+  }, 100);
 }
 
-function verifyOwnerToken(token) {
-  fetch("https://api.github.com/user", {
-    headers: { "Authorization": "Bearer " + token }
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(user) {
-    var login = (user.login || "").toLowerCase();
-    if (login === OWNER.toLowerCase()) {
-      isOwner = true;
-      $("owner-device-status").textContent = "✔ Вход выполнен: " + user.login;
-      $("owner-device-status").style.color = "#9ee493";
-      $("owner-login-btn").textContent = "✔ Вы вошли как " + user.login;
-      $("owner-login-btn").disabled = true;
-    } else {
-      $("owner-device-status").textContent = "Этот аккаунт не является владельцем сайта";
-      $("owner-device-status").style.color = "#ff5555";
-    }
-  })
-  .catch(function(e) {
-    $("owner-device-status").textContent = "Ошибка проверки: " + e.message;
-    $("owner-device-status").style.color = "#ff5555";
-  });
+function submitOwnerPassword() {
+  var inp = $("owner-password-input");
+  var status = $("owner-device-status");
+  var input = (inp.value || "");
+
+  if (_ck(input)) {
+    isOwner = true;
+    status.textContent = "✔ Пароль верный, вы администратор";
+    status.style.color = "#9ee493";
+    $("owner-login-btn").textContent = "✔ Админ подтверждён";
+    $("owner-login-btn").disabled = true;
+    inp.disabled = true;
+    $("owner-password-submit").disabled = true;
+  } else {
+    status.textContent = "Неверный пароль";
+    status.style.color = "#ff5555";
+    inp.value = "";
+    inp.classList.add("invalid");
+    setTimeout(function() { inp.classList.remove("invalid"); }, 800);
+  }
 }
 
 function bindEvents() {
   var loginButton = $("login-button");
   var nickInput = $("nickname-input");
   var ownerLoginBtn = $("owner-login-btn");
+  var passSubmit = $("owner-password-submit");
+  var passInput = $("owner-password-input");
 
   if (loginButton) loginButton.addEventListener("click", handleLogin);
   if (nickInput) {
@@ -454,6 +409,12 @@ function bindEvents() {
     nickInput.addEventListener("input", clearError);
   }
   if (ownerLoginBtn) ownerLoginBtn.addEventListener("click", startOwnerLogin);
+  if (passSubmit) passSubmit.addEventListener("click", submitOwnerPassword);
+  if (passInput) {
+    passInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") submitOwnerPassword();
+    });
+  }
 
   window.addEventListener("beforeunload", function() {
     if (currentNick && db.users[currentNick]) {
