@@ -1,4 +1,4 @@
-import { OWNER, GITHUB_CLIENT_ID, JSONBIN_KEY, JSONBIN_BIN_ID } from './config.js';
+const { OWNER, GITHUB_CLIENT_ID, JSONBIN_KEY, JSONBIN_BIN_ID } = window.APP_CONFIG;
 
 const API = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 const HEADERS = {
