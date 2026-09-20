@@ -260,3 +260,55 @@ body {
   .chat { max-height: 400px; }
   .chat-messages { max-height: 250px; min-height: 200px; }
 }
+.owner-login {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #2a2d35;
+}
+
+.owner-btn {
+  width: 100%;
+  padding: 10px;
+  background: #24292e;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+.owner-btn:hover { background: #2d3339; border-color: #666; }
+
+.device-box {
+  margin-top: 14px;
+  padding: 14px;
+  background: #14161a;
+  border: 1px solid #2a2d35;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 13px;
+  color: #ccc;
+}
+.device-box a { color: #6cb6ff; text-decoration: none; }
+.device-code {
+  font-family: monospace;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: #ffcc66;
+  margin: 10px 0;
+  font-weight: bold;
+}
+.device-status { color: #9ee493; margin-top: 6px; }
+
+.owner-badge {
+  margin-left: auto;
+  align-self: center;
+  padding: 6px 12px;
+  background: #3a2c0a;
+  color: #ffd700;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.hint { font-size: 12px; color: #888; margin-bottom: 10px; }
