@@ -1,4 +1,5 @@
-import { JSONBIN_KEY, JSONBIN_BIN_ID, ADMIN_NICK } from './config.js';
+import { getConfig } from './config.js';
+const { JSONBIN_KEY, JSONBIN_BIN_ID, ADMIN_NICK } = getConfig();
 
 const API = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 const HEADERS = {
