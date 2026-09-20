@@ -58,12 +58,22 @@ body { background: #14161a; color: #e6e6e6; min-height: 100vh; overflow-x: hidde
   border: 1px solid #2a2d35; border-radius: 8px;
   text-align: center; font-size: 13px; color: #ccc;
 }
-.device-box a { color: #6cb6ff; text-decoration: none; word-break: break-all; }
-.device-code {
-  font-family: monospace; font-size: 22px; letter-spacing: 4px;
-  color: #ffcc66; margin: 10px 0; font-weight: bold; word-break: break-all;
+.device-box input {
+  width: 100%; padding: 12px; margin: 10px 0; background: #14161a;
+  border: 2px solid #333; color: #fff; border-radius: 8px;
+  font-size: 16px; text-align: center; outline: none;
+  transition: 0.2s; -webkit-appearance: none;
 }
-.device-status { color: #9ee493; margin-top: 6px; word-break: break-word; }
+.device-box input:focus { border-color: #ffcc66; }
+.device-box input.invalid { border-color: #e04444; box-shadow: 0 0 10px rgba(224,68,68,0.6); }
+.device-box button {
+  width: 100%; padding: 12px; background: #c1272d; color: #fff;
+  border: none; border-radius: 8px; cursor: pointer; font-size: 15px;
+  -webkit-appearance: none; touch-action: manipulation;
+}
+.device-box button:hover, .device-box button:active { background: #e03038; }
+.device-box button:disabled { opacity: 0.6; cursor: default; }
+.device-status { color: #9ee493; margin-top: 10px; word-break: break-word; }
 
 .tabs {
   display: flex; gap: 6px; padding: 10px 12px 0;
